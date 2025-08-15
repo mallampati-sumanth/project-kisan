@@ -1,0 +1,451 @@
+{% extends "base.html" %}
+
+{% block title %}Farming Tips - Kisan+{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">
+            <i class="fas fa-book text-purple-600 mr-2"></i>
+            Farming Tips & Guides
+        </h1>
+        <p class="text-gray-600">Simple, practical guides to improve your farming techniques</p>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="flex flex-wrap justify-center mb-8 space-x-2">
+        <button onclick="showCategory('irrigation')" class="category-btn active bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 transition-colors mb-2">
+            <i class="fas fa-tint mr-1"></i>Irrigation
+        </button>
+        <button onclick="showCategory('sowing')" class="category-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors mb-2">
+            <i class="fas fa-seedling mr-1"></i>Sowing
+        </button>
+        <button onclick="showCategory('harvesting')" class="category-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300 transition-colors mb-2">
+            <i class="fas fa-wheat-awn mr-1"></i>Harvesting
+        </button>
+    </div>
+
+    <!-- Tips Content -->
+    {% for category, category_tips in tips.items() %}
+    <div id="{{ category }}-tips" class="tips-category {{ 'block' if category == 'irrigation' else 'hidden' }}">
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            {% for tip in category_tips %}
+            <div class="card-shadow bg-white p-6 rounded-lg hover:shadow-xl transition-shadow">
+                <div class="flex items-start space-x-4">
+                    <div class="text-4xl">{{ tip.icon }}</div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">{{ tip.title }}</h3>
+                        <p class="text-gray-600 mb-4">{{ tip.content }}</p>
+                        <div class="flex space-x-3">
+                            <button class="speak-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors" data-text="{{ tip.content }}">
+                                <i class="fas fa-volume-up mr-1"></i>Listen
+                            </button>
+                            <button class="guide-btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition-colors" data-title="{{ tip.title }}">
+                                <i class="fas fa-info-circle mr-1"></i>Detailed Guide
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Seasonal Recommendations -->
+    <div class="card-shadow bg-white p-6 rounded-lg mb-8">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-calendar-alt text-orange-600 mr-2"></i>
+            Seasonal Recommendations
+        </h3>
+        
+        <div class="grid md:grid-cols-4 gap-4">
+            <div class="text-center p-4 bg-green-50 rounded-lg">
+                <div class="text-3xl mb-2">🌱</div>
+                <h4 class="font-semibold text-gray-800 mb-1">Spring</h4>
+                <p class="text-sm text-gray-600">Prepare soil, plant summer crops</p>
+            </div>
+            <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                <div class="text-3xl mb-2">☀️</div>
+                <h4 class="font-semibold text-gray-800 mb-1">Summer</h4>
+                <p class="text-sm text-gray-600">Frequent irrigation, pest control</p>
+            </div>
+            <div class="text-center p-4 bg-orange-50 rounded-lg">
+                <div class="text-3xl mb-2">🌾</div>
+                <h4 class="font-semibold text-gray-800 mb-1">Monsoon</h4>
+                <p class="text-sm text-gray-600">Plant kharif crops, drainage</p>
+            </div>
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+                <div class="text-3xl mb-2">❄️</div>
+                <h4 class="font-semibold text-gray-800 mb-1">Winter</h4>
+                <p class="text-sm text-gray-600">Harvest, prepare for rabi</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Tutorials Section -->
+    <div class="card-shadow bg-white p-6 rounded-lg mb-8">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-play-circle text-red-600 mr-2"></i>
+            Video Tutorials
+        </h3>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-gray-100 rounded-lg p-4 text-center">
+                <div class="w-full h-32 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
+                    <i class="fas fa-play-circle text-4xl text-gray-400"></i>
+                </div>
+                <h4 class="font-medium text-gray-800 mb-1">Drip Irrigation Setup</h4>
+                <p class="text-sm text-gray-600 mb-3">Learn to install and maintain drip irrigation systems</p>
+                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                    <i class="fas fa-play mr-1"></i>Watch Video
+                </button>
+            </div>
+            
+            <div class="bg-gray-100 rounded-lg p-4 text-center">
+                <div class="w-full h-32 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
+                    <i class="fas fa-play-circle text-4xl text-gray-400"></i>
+                </div>
+                <h4 class="font-medium text-gray-800 mb-1">Seed Treatment Methods</h4>
+                <p class="text-sm text-gray-600 mb-3">Proper techniques for treating seeds before sowing</p>
+                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                    <i class="fas fa-play mr-1"></i>Watch Video
+                </button>
+            </div>
+            
+            <div class="bg-gray-100 rounded-lg p-4 text-center">
+                <div class="w-full h-32 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
+                    <i class="fas fa-play-circle text-4xl text-gray-400"></i>
+                </div>
+                <h4 class="font-medium text-gray-800 mb-1">Pest Identification</h4>
+                <p class="text-sm text-gray-600 mb-3">Identify common pests and their natural remedies</p>
+                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                    <i class="fas fa-play mr-1"></i>Watch Video
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Reference Cards -->
+    <div class="card-shadow bg-white p-6 rounded-lg">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-bookmark text-indigo-600 mr-2"></i>
+            Quick Reference Cards
+        </h3>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <h4 class="font-medium text-gray-800 mb-2">
+                    <i class="fas fa-thermometer-half text-red-500 mr-1"></i>
+                    Crop Temperature Ranges
+                </h4>
+                <div class="text-sm space-y-1">
+                    <div>Rice: 20-35°C</div>
+                    <div>Wheat: 10-25°C</div>
+                    <div>Maize: 15-35°C</div>
+                    <div>Cotton: 18-35°C</div>
+                </div>
+            </div>
+            
+            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <h4 class="font-medium text-gray-800 mb-2">
+                    <i class="fas fa-tint text-blue-500 mr-1"></i>
+                    Water Requirements
+                </h4>
+                <div class="text-sm space-y-1">
+                    <div>Rice: 1200-2500mm</div>
+                    <div>Wheat: 450-650mm</div>
+                    <div>Maize: 500-800mm</div>
+                    <div>Cotton: 700-1300mm</div>
+                </div>
+            </div>
+            
+            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <h4 class="font-medium text-gray-800 mb-2">
+                    <i class="fas fa-flask text-green-500 mr-1"></i>
+                    NPK Recommendations
+                </h4>
+                <div class="text-sm space-y-1">
+                    <div>Rice: 100:50:50</div>
+                    <div>Wheat: 120:60:40</div>
+                    <div>Maize: 120:60:40</div>
+                    <div>Cotton: 80:40:40</div>
+                </div>
+            </div>
+            
+            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <h4 class="font-medium text-gray-800 mb-2">
+                    <i class="fas fa-ruler text-purple-500 mr-1"></i>
+                    Plant Spacing
+                </h4>
+                <div class="text-sm space-y-1">
+                    <div>Rice: 20x15cm</div>
+                    <div>Wheat: 22cm rows</div>
+                    <div>Maize: 60x20cm</div>
+                    <div>Cotton: 90x30cm</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detailed Guide Modal -->
+<div id="guideModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-start mb-4">
+                <h3 id="modalTitle" class="text-xl font-bold text-gray-800"></h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="modalContent" class="prose max-w-none">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showCategory(category) {
+    // Hide all categories
+    document.querySelectorAll('.tips-category').forEach(cat => {
+        cat.classList.add('hidden');
+    });
+    
+    // Show selected category
+    document.getElementById(category + '-tips').classList.remove('hidden');
+    
+    // Update button states
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-green-500', 'text-white');
+        btn.classList.add('bg-gray-200', 'text-gray-700');
+    });
+    
+    event.target.classList.add('active', 'bg-green-500', 'text-white');
+    event.target.classList.remove('bg-gray-200', 'text-gray-700');
+}
+
+function showDetailedGuide(title) {
+    const guides = {
+        'Drip Irrigation Setup': {
+            content: `
+                <h4>Materials Needed:</h4>
+                <ul>
+                    <li>Main water pipe (25mm or 32mm)</li>
+                    <li>Drip tubes (16mm)</li>
+                    <li>Emitters (2-4 LPH)</li>
+                    <li>Connectors and valves</li>
+                    <li>Filter and pressure regulator</li>
+                </ul>
+                
+                <h4>Step-by-Step Installation:</h4>
+                <ol>
+                    <li>Connect main pipe to water source with filter</li>
+                    <li>Install pressure regulator (1-2 bar)</li>
+                    <li>Lay main pipes along field rows</li>
+                    <li>Connect drip tubes at 30cm intervals</li>
+                    <li>Insert emitters every 30cm in drip tubes</li>
+                    <li>Test system and adjust pressure</li>
+                </ol>
+                
+                <h4>Maintenance Tips:</h4>
+                <ul>
+                    <li>Clean filters weekly</li>
+                    <li>Check for blocked emitters monthly</li>
+                    <li>Flush system every 2 weeks</li>
+                    <li>Replace damaged tubes immediately</li>
+                </ul>
+            `
+        },
+        'Water Schedule': {
+            content: `
+                <h4>Best Watering Times:</h4>
+                <ul>
+                    <li><strong>Early Morning (5-7 AM):</strong> Lowest evaporation, good absorption</li>
+                    <li><strong>Evening (6-8 PM):</strong> Cool temperatures, overnight absorption</li>
+                    <li><strong>Avoid:</strong> Midday watering (10 AM - 4 PM)</li>
+                </ul>
+                
+                <h4>Frequency Guidelines:</h4>
+                <ul>
+                    <li><strong>Sandy Soil:</strong> Daily light watering</li>
+                    <li><strong>Clay Soil:</strong> Every 2-3 days, deep watering</li>
+                    <li><strong>Loamy Soil:</strong> Every other day, moderate amount</li>
+                </ul>
+                
+                <h4>Signs Your Crops Need Water:</h4>
+                <ul>
+                    <li>Leaves appear wilted or droopy</li>
+                    <li>Soil is dry 2-3 inches deep</li>
+                    <li>Plant growth slows down</li>
+                    <li>Leaves turn yellow or brown at edges</li>
+                </ul>
+            `
+        },
+        'Seed Treatment': {
+            content: `
+                <h4>Why Treat Seeds?</h4>
+                <ul>
+                    <li>Prevents soil-borne diseases</li>
+                    <li>Improves germination rate</li>
+                    <li>Protects against early pests</li>
+                    <li>Enhances seedling vigor</li>
+                </ul>
+                
+                <h4>Treatment Methods:</h4>
+                <ol>
+                    <li><strong>Fungicide Treatment:</strong> Mix 2-3g fungicide per kg seeds</li>
+                    <li><strong>Hot Water Treatment:</strong> Soak in 50°C water for 30 minutes</li>
+                    <li><strong>Bioagent Treatment:</strong> Use Trichoderma @ 4g per kg seeds</li>
+                    <li><strong>Nutrient Coating:</strong> Apply zinc sulfate @ 2g per kg seeds</li>
+                </ol>
+                
+                <h4>Application Process:</h4>
+                <ol>
+                    <li>Clean and dry seeds thoroughly</li>
+                    <li>Mix treatment material with small amount of water</li>
+                    <li>Coat seeds evenly and dry in shade</li>
+                    <li>Sow treated seeds within 24 hours</li>
+                </ol>
+            `
+        },
+        'Spacing Guidelines': {
+            content: `
+                <h4>Importance of Proper Spacing:</h4>
+                <ul>
+                    <li>Reduces competition for nutrients</li>
+                    <li>Improves air circulation</li>
+                    <li>Better light penetration</li>
+                    <li>Easier cultivation and harvesting</li>
+                </ul>
+                
+                <h4>Spacing Recommendations:</h4>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr><th style="border: 1px solid #ddd; padding: 8px;">Crop</th><th style="border: 1px solid #ddd; padding: 8px;">Row Spacing</th><th style="border: 1px solid #ddd; padding: 8px;">Plant Spacing</th></tr>
+                    <tr><td style="border: 1px solid #ddd; padding: 8px;">Rice</td><td style="border: 1px solid #ddd; padding: 8px;">20 cm</td><td style="border: 1px solid #ddd; padding: 8px;">15 cm</td></tr>
+                    <tr><td style="border: 1px solid #ddd; padding: 8px;">Wheat</td><td style="border: 1px solid #ddd; padding: 8px;">22 cm</td><td style="border: 1px solid #ddd; padding: 8px;">Broadcast</td></tr>
+                    <tr><td style="border: 1px solid #ddd; padding: 8px;">Maize</td><td style="border: 1px solid #ddd; padding: 8px;">60 cm</td><td style="border: 1px solid #ddd; padding: 8px;">20 cm</td></tr>
+                    <tr><td style="border: 1px solid #ddd; padding: 8px;">Cotton</td><td style="border: 1px solid #ddd; padding: 8px;">90 cm</td><td style="border: 1px solid #ddd; padding: 8px;">30 cm</td></tr>
+                </table>
+                
+                <h4>Factors Affecting Spacing:</h4>
+                <ul>
+                    <li>Soil fertility level</li>
+                    <li>Irrigation availability</li>
+                    <li>Variety characteristics</li>
+                    <li>Expected plant size</li>
+                </ul>
+            `
+        },
+        'Harvest Timing': {
+            content: `
+                <h4>Signs of Maturity:</h4>
+                <ul>
+                    <li><strong>Cereals:</strong> Grains hard, moisture 20-25%</li>
+                    <li><strong>Legumes:</strong> Pods dry and rattle</li>
+                    <li><strong>Fruits:</strong> Color change and easy detachment</li>
+                    <li><strong>Vegetables:</strong> Size, color, and firmness optimal</li>
+                </ul>
+                
+                <h4>Harvest Indicators by Crop:</h4>
+                <ul>
+                    <li><strong>Rice:</strong> 80% grains turn golden yellow</li>
+                    <li><strong>Wheat:</strong> Grains hard, straw turns golden</li>
+                    <li><strong>Maize:</strong> Husks dry, kernels dent and hard</li>
+                    <li><strong>Cotton:</strong> Bolls open, fiber white and fluffy</li>
+                </ul>
+                
+                <h4>Best Harvesting Practices:</h4>
+                <ol>
+                    <li>Harvest during cool, dry weather</li>
+                    <li>Use clean, sharp tools</li>
+                    <li>Handle produce gently to avoid damage</li>
+                    <li>Start early morning for best quality</li>
+                    <li>Complete harvest before rains</li>
+                </ol>
+            `
+        },
+        'Post Harvest': {
+            content: `
+                <h4>Immediate Post-Harvest Steps:</h4>
+                <ol>
+                    <li>Remove field heat quickly</li>
+                    <li>Clean produce thoroughly</li>
+                    <li>Sort by size and quality</li>
+                    <li>Begin drying process immediately</li>
+                </ol>
+                
+                <h4>Drying Methods:</h4>
+                <ul>
+                    <li><strong>Sun Drying:</strong> Spread thin layer on clean surface</li>
+                    <li><strong>Mechanical Drying:</strong> Use grain dryers for faster results</li>
+                    <li><strong>Solar Drying:</strong> Use solar dryers for better quality</li>
+                </ul>
+                
+                <h4>Target Moisture Levels:</h4>
+                <ul>
+                    <li>Rice: 14% or below</li>
+                    <li>Wheat: 12% or below</li>
+                    <li>Maize: 14% or below</li>
+                    <li>Pulses: 10-12%</li>
+                </ul>
+                
+                <h4>Storage Tips:</h4>
+                <ul>
+                    <li>Use clean, dry storage containers</li>
+                    <li>Ensure proper ventilation</li>
+                    <li>Monitor for pests regularly</li>
+                    <li>Maintain records of quality and quantity</li>
+                </ul>
+            `
+        }
+    };
+    
+    const guide = guides[title];
+    if (guide) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalContent').innerHTML = guide.content;
+        document.getElementById('guideModal').classList.remove('hidden');
+    }
+}
+
+function closeModal() {
+    document.getElementById('guideModal').classList.add('hidden');
+}
+
+// Close modal when clicking outside
+document.getElementById('guideModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Video tutorial placeholders (in a real app, these would open actual videos)
+document.querySelectorAll('.bg-red-500').forEach(button => {
+    button.addEventListener('click', function() {
+        alert('Video tutorials will be available in the full version!');
+    });
+});
+
+// Add event listeners for speak and guide buttons
+document.addEventListener('DOMContentLoaded', function() {
+    // Speak button handlers
+    document.querySelectorAll('.speak-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const text = this.getAttribute('data-text');
+            speakText(text);
+        });
+    });
+    
+    // Guide button handlers
+    document.querySelectorAll('.guide-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const title = this.getAttribute('data-title');
+            showDetailedGuide(title);
+        });
+    });
+});
+</script>
+{% endblock %}

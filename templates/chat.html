@@ -1,0 +1,444 @@
+{% extends "base.html" %}
+
+{% block title %}AI Chat - Kisan+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="card-shadow bg-white rounded-lg h-[600px] flex flex-col">
+        <!-- Chat Header -->
+        <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-t-lg">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-robot text-2xl"></i>
+                    <div>
+                        <h2 class="text-xl font-semibold">Kisan+ AI Assistant</h2>
+                        <p class="text-green-100 text-sm">Ask me anything about farming!</p>
+                    </div>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="toggleVoiceMode()" class="p-2 bg-green-400 hover:bg-green-300 rounded-lg transition-colors" title="Voice Mode">
+                        <i class="fas fa-microphone" id="voiceIcon"></i>
+                    </button>
+                    <button onclick="clearChat()" class="p-2 bg-green-400 hover:bg-green-300 rounded-lg transition-colors" title="Clear Chat">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+            <!-- Welcome Message -->
+            <div class="flex items-start space-x-3">
+                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-robot text-white text-sm"></i>
+                </div>
+                <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs lg:max-w-md">
+                    <p class="text-gray-800">Hello! I'm your AI farming assistant. You can ask me about:</p>
+                    <ul class="mt-2 text-sm text-gray-600 space-y-1">
+                        <li>• Crop diseases and pests</li>
+                        <li>• Weather and farming tips</li>
+                        <li>• Fertilizer recommendations</li>
+                        <li>• Market prices</li>
+                        <li>• Irrigation methods</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Previous Chat History -->
+            {% for chat in chat_history %}
+            <div class="flex justify-end">
+                <div class="bg-green-500 text-white p-3 rounded-lg max-w-xs lg:max-w-md">
+                    {{ chat.question }}
+                    <div class="text-xs text-green-100 mt-1">{{ chat.timestamp.strftime('%H:%M') }}</div>
+                </div>
+            </div>
+            <div class="flex items-start space-x-3">
+                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-robot text-white text-sm"></i>
+                </div>
+                <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs lg:max-w-md">
+                    {{ chat.answer }}
+                    <div class="text-xs text-gray-400 mt-1">{{ chat.timestamp.strftime('%H:%M') }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-4 border-t bg-white rounded-b-lg">
+            <!-- Voice Status Indicator -->
+            <div id="voiceStatusIndicator" class="hidden mb-3 p-2 bg-red-50 border border-red-200 rounded-lg">
+                <div class="flex items-center space-x-2 text-red-600">
+                    <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm font-medium">Listening... Speak now</span>
+                </div>
+            </div>
+            
+            <div class="flex space-x-3">
+                <div class="flex-1 relative">
+                    <input 
+                        type="text" 
+                        id="messageInput" 
+                        placeholder="Type your farming question here or use voice input..." 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent pr-12"
+                        onkeypress="handleKeyPress(event)"
+                    >
+                    <button 
+                        onclick="startVoiceRecognition('messageInput')" 
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-500 transition-colors p-1"
+                        title="Voice Input (Kannada/English)"
+                        id="voiceInputButton"
+                    >
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+                <button 
+                    onclick="sendMessage()" 
+                    class="btn-primary text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center space-x-2"
+                    id="sendButton"
+                >
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send</span>
+                </button>
+            </div>
+            
+            <!-- Quick Suggestions -->
+            <div class="mt-3 flex flex-wrap gap-2">
+                <button onclick="sendQuickMessage('What are the symptoms of wheat rust disease?')" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors">
+                    Wheat rust symptoms
+                </button>
+                <button onclick="sendQuickMessage('How much water does rice need per day?')" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors">
+                    Rice watering
+                </button>
+                <button onclick="sendQuickMessage('Current market price of wheat')" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors">
+                    Wheat prices
+                </button>
+                <button onclick="sendQuickMessage('Best fertilizer for tomato plants')" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors">
+                    Tomato fertilizer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Mode Indicator -->
+    <div id="voiceModeIndicator" class="hidden fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg">
+        <i class="fas fa-microphone mr-2"></i>
+        Listening...
+    </div>
+</div>
+
+<script>
+let isVoiceMode = false;
+let isListening = false;
+let speechSynthesis = window.speechSynthesis;
+let currentAudio = null;
+
+// Initialize speech recognition
+if ('webkitSpeechRecognition' in window) {
+    window.recognition = new webkitSpeechRecognition();
+    window.recognition.continuous = false;
+    window.recognition.interimResults = false;
+    window.recognition.lang = 'kn-IN'; // Kannada language
+    
+    // Fallback to English if Kannada not available
+    window.recognition.onerror = function(event) {
+        if (event.error === 'language-not-supported') {
+            window.recognition.lang = 'en-IN';
+        }
+    };
+} else if ('SpeechRecognition' in window) {
+    window.recognition = new SpeechRecognition();
+    window.recognition.continuous = false;
+    window.recognition.interimResults = false;
+    window.recognition.lang = 'kn-IN';
+}
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+function sendQuickMessage(message) {
+    document.getElementById('messageInput').value = message;
+    sendMessage();
+}
+
+async function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    // Clear input and disable send button
+    input.value = '';
+    const sendButton = document.getElementById('sendButton');
+    sendButton.disabled = true;
+    sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Thinking...</span>';
+    
+    // Add user message to chat
+    addMessageToChat(message, 'user');
+    
+    try {
+        const response = await fetch('/voice_chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                message: message,
+                include_audio: isVoiceMode
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Add AI response to chat
+            addMessageToChat(data.response, 'ai');
+            
+            // Play audio response if available and voice mode is enabled
+            if (isVoiceMode && data.audio_base64) {
+                playAudioFromBase64(data.audio_base64);
+            } else if (isVoiceMode) {
+                // Fallback to browser speech synthesis
+                speakText(data.response);
+            }
+        } else {
+            addMessageToChat('Sorry, I encountered an error. Please try again.', 'ai');
+        }
+        
+    } catch (error) {
+        console.error('Chat error:', error);
+        addMessageToChat('Sorry, I encountered an error. Please try again.', 'ai');
+    }
+    
+    // Re-enable send button
+    sendButton.disabled = false;
+    sendButton.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send</span>';
+    
+    // Focus back on input
+    input.focus();
+}
+
+function addMessageToChat(message, sender, timestamp = null) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    
+    if (sender === 'user') {
+        messageDiv.className = 'flex justify-end';
+        messageDiv.innerHTML = `
+            <div class="bg-green-500 text-white p-3 rounded-lg max-w-xs lg:max-w-md">
+                ${message}
+                <div class="text-xs text-green-100 mt-1">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+            </div>
+        `;
+    } else {
+        messageDiv.className = 'flex items-start space-x-3';
+        messageDiv.innerHTML = `
+            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-robot text-white text-sm"></i>
+            </div>
+            <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs lg:max-w-md">
+                ${message}
+                <div class="text-xs text-gray-400 mt-1">${timestamp || new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                <button onclick="speakText('${message.replace(/'/g, "\\'")}')" class="text-xs text-green-600 hover:text-green-500 mt-1 flex items-center">
+                    <i class="fas fa-volume-up mr-1"></i> Listen
+                </button>
+            </div>
+        `;
+    }
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function toggleVoiceMode() {
+    isVoiceMode = !isVoiceMode;
+    const voiceIcon = document.getElementById('voiceIcon');
+    
+    if (isVoiceMode) {
+        voiceIcon.className = 'fas fa-microphone-slash';
+        voiceIcon.parentElement.classList.add('bg-red-400');
+        voiceIcon.parentElement.classList.remove('bg-green-400');
+        voiceIcon.parentElement.title = 'Voice Mode On - Click to disable';
+    } else {
+        voiceIcon.className = 'fas fa-microphone';
+        voiceIcon.parentElement.classList.add('bg-green-400');
+        voiceIcon.parentElement.classList.remove('bg-red-400');
+        voiceIcon.parentElement.title = 'Voice Mode Off - Click to enable';
+        
+        // Stop any current audio
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio = null;
+        }
+        speechSynthesis.cancel();
+    }
+}
+
+function clearChat() {
+    if (confirm('Are you sure you want to clear the chat history?')) {
+        const chatMessages = document.getElementById('chatMessages');
+        // Keep only the welcome message
+        const welcomeMessage = chatMessages.children[0];
+        chatMessages.innerHTML = '';
+        chatMessages.appendChild(welcomeMessage);
+    }
+}
+
+// Enhanced voice recognition with visual feedback
+function startVoiceRecognition(inputId) {
+    if (!window.recognition) {
+        alert('Voice recognition not supported in this browser');
+        return;
+    }
+    
+    if (isListening) {
+        window.recognition.stop();
+        return;
+    }
+    
+    isListening = true;
+    const input = document.getElementById(inputId);
+    const voiceButton = document.getElementById('voiceInputButton');
+    const voiceStatus = document.getElementById('voiceStatusIndicator');
+    
+    // Visual feedback
+    input.style.borderColor = '#ef4444';
+    voiceButton.innerHTML = '<i class="fas fa-stop text-red-500"></i>';
+    voiceStatus.classList.remove('hidden');
+    
+    window.recognition.start();
+    
+    window.recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        
+        // Auto-send if voice mode is enabled
+        if (isVoiceMode) {
+            setTimeout(() => sendMessage(), 500);
+        }
+    };
+    
+    window.recognition.onerror = function(event) {
+        console.error('Speech recognition error:', event.error);
+        voiceStatus.innerHTML = `
+            <div class="flex items-center space-x-2 text-orange-600">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span class="text-sm">Voice recognition error. Try again.</span>
+            </div>
+        `;
+        setTimeout(() => {
+            resetVoiceUI(input, voiceButton, voiceStatus);
+        }, 2000);
+    };
+    
+    window.recognition.onend = function() {
+        resetVoiceUI(input, voiceButton, voiceStatus);
+    };
+}
+
+function resetVoiceUI(input, voiceButton, voiceStatus) {
+    isListening = false;
+    input.style.borderColor = '#d1d5db';
+    voiceButton.innerHTML = '<i class="fas fa-microphone"></i>';
+    voiceStatus.classList.add('hidden');
+    voiceStatus.innerHTML = `
+        <div class="flex items-center space-x-2 text-red-600">
+            <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+            <span class="text-sm font-medium">Listening... Speak now</span>
+        </div>
+    `;
+}
+
+// Text-to-speech function
+async function speakText(text) {
+    // Stop any current speech
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+    }
+    speechSynthesis.cancel();
+    
+    try {
+        // Try to use server-side TTS first
+        const response = await fetch('/text_to_speech', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text: text })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.audio_base64) {
+            playAudioFromBase64(data.audio_base64);
+        } else {
+            // Fallback to browser speech synthesis
+            fallbackSpeechSynthesis(text);
+        }
+    } catch (error) {
+        console.error('TTS error:', error);
+        // Fallback to browser speech synthesis
+        fallbackSpeechSynthesis(text);
+    }
+}
+
+function playAudioFromBase64(audioBase64) {
+    try {
+        const audio = new Audio('data:audio/wav;base64,' + audioBase64);
+        currentAudio = audio;
+        audio.play().catch(error => {
+            console.error('Audio play error:', error);
+        });
+    } catch (error) {
+        console.error('Audio creation error:', error);
+    }
+}
+
+function fallbackSpeechSynthesis(text) {
+    if (speechSynthesis) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'kn-IN'; // Kannada
+        utterance.rate = 0.8;
+        utterance.pitch = 1.0;
+        utterance.volume = 0.8;
+        
+        // Try to find a Kannada voice
+        const voices = speechSynthesis.getVoices();
+        const kannadaVoice = voices.find(voice => voice.lang === 'kn-IN');
+        if (kannadaVoice) {
+            utterance.voice = kannadaVoice;
+        } else {
+            // Fallback to English-India
+            utterance.lang = 'en-IN';
+            const englishIndiaVoice = voices.find(voice => voice.lang === 'en-IN');
+            if (englishIndiaVoice) {
+                utterance.voice = englishIndiaVoice;
+            }
+        }
+        
+        speechSynthesis.speak(utterance);
+    }
+}
+
+// Auto-focus on input when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('messageInput').focus();
+    
+    // Scroll to bottom of chat
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Load voices for speech synthesis
+    if (speechSynthesis) {
+        speechSynthesis.onvoiceschanged = function() {
+            // Voices are loaded
+        };
+    }
+});
+</script>
+{% endblock %}

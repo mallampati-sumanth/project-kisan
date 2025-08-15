@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="gradient-bg text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <div class="mb-8">
+            <i class="fas fa-seedling text-6xl mb-4 text-green-300"></i>
+            <h1 class="text-5xl font-bold mb-6">Kisan+</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">
+                Your AI-powered farming assistant. Get expert advice, weather updates, market prices, and crop health diagnosis - all in one place.
+            </p>
+            <div class="space-x-4">
+                <a href="{{ url_for('login') }}" class="btn-primary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-block">
+                    <i class="fas fa-rocket mr-2"></i>Get Started
+                </a>
+                <a href="#features" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-gray-800 transition-all duration-300 inline-block">
+                    <i class="fas fa-info-circle mr-2"></i>Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="features" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">Features</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Everything a modern farmer needs to make informed decisions
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="card-shadow bg-white p-8 rounded-lg text-center hover:shadow-xl transition-shadow">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-robot text-2xl text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">AI Chat Assistant</h3>
+                <p class="text-gray-600">Ask questions about crops, weather, and pests in natural language with voice support.</p>
+            </div>
+
+            <div class="card-shadow bg-white p-8 rounded-lg text-center hover:shadow-xl transition-shadow">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-cloud-sun text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Weather Updates</h3>
+                <p class="text-gray-600">Real-time weather reports and forecasts for your location to plan farming activities.</p>
+            </div>
+
+            <div class="card-shadow bg-white p-8 rounded-lg text-center hover:shadow-xl transition-shadow">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-chart-line text-2xl text-yellow-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Market Prices</h3>
+                <p class="text-gray-600">Current crop prices from nearby markets to help you make better selling decisions.</p>
+            </div>
+
+            <div class="card-shadow bg-white p-8 rounded-lg text-center hover:shadow-xl transition-shadow">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-camera text-2xl text-red-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Crop Health Diagnosis</h3>
+                <p class="text-gray-600">Upload plant photos to get AI analysis of diseases and treatment recommendations.</p>
+            </div>
+
+            <div class="card-shadow bg-white p-8 rounded-lg text-center hover:shadow-xl transition-shadow">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-book text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Farming Tips</h3>
+                <p class="text-gray-600">Simple guides on irrigation, sowing, and harvesting with visual instructions.</p>
+            </div>
+
+            <div class="card-shadow bg-white p-8 rounded-lg text-center hover:shadow-xl transition-shadow">
+                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-users text-2xl text-indigo-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Community Forum</h3>
+                <p class="text-gray-600">Connect with other farmers to share experiences and get expert advice.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold text-gray-800 mb-8">Why Choose Kisan+?</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-mobile-alt text-3xl text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Mobile Friendly</h3>
+                <p class="text-gray-600">Designed for smartphones with large buttons and simple navigation.</p>
+            </div>
+            <div class="text-center">
+                <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-wifi text-3xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Offline Ready</h3>
+                <p class="text-gray-600">Access previously saved information even without internet connection.</p>
+            </div>
+            <div class="text-center">
+                <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-heart text-3xl text-yellow-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Completely Free</h3>
+                <p class="text-gray-600">No cost barrier - helping all farmers regardless of economic status.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="gradient-bg text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold mb-8">Ready to Transform Your Farming?</h2>
+        <p class="text-xl mb-8 max-w-2xl mx-auto">
+            Join thousands of farmers who are already using Kisan+ to make better agricultural decisions.
+        </p>
+        <a href="{{ url_for('login') }}" class="bg-white text-gray-800 px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-block">
+            <i class="fas fa-arrow-right mr-2"></i>Start Using Kisan+
+        </a>
+    </div>
+</section>
+{% endblock %}

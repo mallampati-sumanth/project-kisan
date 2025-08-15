@@ -1,0 +1,173 @@
+/* Custom CSS for Kisan+ */
+
+.gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+/* Voice animation */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.voice-active {
+    animation: pulse 1s infinite;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .grid {
+        gap: 1rem;
+    }
+    
+    .text-5xl {
+        font-size: 2.5rem;
+    }
+    
+    .text-3xl {
+        font-size: 1.875rem;
+    }
+}
+
+/* Loading spinner */
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Chat bubbles */
+.chat-bubble {
+    border-radius: 18px;
+    max-width: 70%;
+}
+
+.chat-bubble-user {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+}
+
+.chat-bubble-ai {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+}
+
+/* Market price trends */
+.price-up {
+    color: #16a34a;
+}
+
+.price-down {
+    color: #dc2626;
+}
+
+.price-neutral {
+    color: #6b7280;
+}
+
+/* Weather icons animation */
+.weather-icon {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Forum post interactions */
+.post-actions button:hover {
+    transform: translateY(-1px);
+    transition: transform 0.2s ease;
+}
+
+/* Diagnosis upload area */
+.upload-area:hover {
+    border-color: #4ade80;
+    background-color: #f0fdf4;
+}
+
+/* Tips category tabs */
+.category-btn.active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth transitions */
+* {
+    transition: all 0.2s ease;
+}
+
+/* Dark mode support (future enhancement) */
+@media (prefers-color-scheme: dark) {
+    /* Dark mode styles can be added here */
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+}
+
+/* Accessibility improvements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus styles for keyboard navigation */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #4ade80;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .btn-primary {
+        background: #000;
+        border: 2px solid #fff;
+    }
+    
+    .card-shadow {
+        border: 2px solid #000;
+    }
+}
