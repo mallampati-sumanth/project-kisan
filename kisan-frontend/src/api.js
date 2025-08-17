@@ -11,7 +11,7 @@ const api = {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(body),
-    });
+    });av
     return res.json();
   },
   async upload(path, formData) {
