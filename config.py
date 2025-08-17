@@ -31,7 +31,7 @@ class Config:
     # Languages supported
     SUPPORTED_LANGUAGES = [
         ('en', 'English'),
-        ('hi', 'हिंदी'),
+        ('hi', 'हिंदी'), 
         ('te', 'తెలుగు'),
         ('ta', 'தமிழ்'),
         ('kn', 'ಕನ್ನಡ'),
